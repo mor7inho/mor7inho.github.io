@@ -1,334 +1,654 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<title>Sala de Questões</title>
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<style>
-  :root {
-    --blue: #3b82f6;
-    --green: #22c55e;
-    --red: #ef4444;
-    --muted: #9ca3af;
-    --bg-dark: #1e2530;
-    --bg-card: #252c3a;
-    --text-light: #e5e7eb;
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Histórias Jurídicas — Demo</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --card:#101824; --card2:#0f1722; --txt:#e8eef6; --mut:#9fb0c3;
+      --line:#1c2a3a; --acc:#7dd3fc; --ok:#34d399; --warn:#fbbf24;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --r:18px;
+      --w: 1100px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--txt); background: radial-gradient(1200px 900px at 15% 5%, rgba(125,211,252,.10), transparent 55%),
+              radial-gradient(1100px 900px at 85% 0%, rgba(52,211,153,.10), transparent 55%),
+              var(--bg);
+      line-height:1.5;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--w); margin:0 auto; padding:22px 18px 70px}
+    header{
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+      padding:14px 14px; border:1px solid var(--line); border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(16,24,36,.92), rgba(11,15,20,.86));
+      box-shadow: var(--shadow);
+      position: sticky; top: 10px; z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{
+      width:40px; height:40px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(125,211,252,.95), rgba(52,211,153,.95));
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+    .brand h1{font-size:14px; margin:0}
+    .brand p{font-size:12px; margin:2px 0 0; color:var(--mut)}
 
-  body {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-light);
-    margin: 0;
-    padding: 32px;
-  }
+    .nav{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+    .pill{
+      padding:9px 12px; border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      color: var(--txt);
+      font-size: 12px;
+    }
+    .pill:hover{border-color: rgba(125,211,252,.5)}
 
-  .wrap {
-    max-width: 900px;
-    margin: 0 auto;
-  }
+    .grid{
+      margin-top: 18px;
+      display:grid; grid-template-columns: 1.2fr .8fr; gap: 16px;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns: 1fr;}
+      header{top:0; border-radius: 0; border-left:none; border-right:none;}
+      .wrap{padding:0 14px 70px}
+      .spacer{height:12px}
+    }
 
-  .card {
-    background: var(--bg-card);
-    border-radius: 14px;
-    padding: 32px;
-    box-shadow: none;
-    border: none;
-  }
+    .card{
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(16,24,36,.92), rgba(15,23,34,.86));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{padding:16px 16px 10px; border-bottom:1px solid rgba(28,42,58,.6)}
+    .card .bd{padding:16px}
 
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 600;
-  }
+    .h2{font-size:14px; margin:0 0 6px}
+    .mut{color:var(--mut); font-size:12px}
 
-  img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 12px 0;
-  }
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px}
+    input[type="search"]{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      color: var(--txt);
+      outline:none;
+    }
+    input[type="search"]:focus{border-color: rgba(125,211,252,.55)}
 
-  #fontControls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-    font-size: 14px;
-    color: var(--muted);
-  }
+    .kpis{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;}
+    .kpi{padding:12px; border-radius: 16px; border:1px solid var(--line); background: rgba(255,255,255,.03)}
+    .kpi .n{font-size:18px; font-weight:700}
+    .kpi .l{font-size:12px; color:var(--mut)}
 
-  #meta {
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 18px;
-  }
+    .list{display:flex; flex-direction:column; gap:10px}
+    .item{
+      padding: 12px 12px;
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.03);
+      display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
+    }
+    .item:hover{border-color: rgba(125,211,252,.45)}
+    .meta{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+    .tag{
+      font-size: 11px; color: var(--mut);
+      padding: 5px 9px; border-radius: 999px;
+      border:1px solid rgba(28,42,58,.8);
+      background: rgba(0,0,0,.12);
+    }
+    .tag.acc{color: rgba(125,211,252,.95); border-color: rgba(125,211,252,.25)}
+    .tag.ok{color: rgba(52,211,153,.95); border-color: rgba(52,211,153,.25)}
 
-  #enunciado {
-    font-size: 18px;
-    line-height: 1.7;
-    margin-bottom: 18px;
-    padding: 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
-    transition: font-size 0.3s ease;
-  }
+    .btn{
+      padding: 10px 12px; border-radius: 12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--txt);
+      font-weight:600; font-size:12px;
+      cursor:pointer;
+    }
+    .btn:hover{border-color: rgba(125,211,252,.5)}
+    .btn.primary{border-color: rgba(125,211,252,.35); background: rgba(125,211,252,.10)}
+    .btn.ok{border-color: rgba(52,211,153,.35); background: rgba(52,211,153,.10)}
 
-  .alt-btn {
-    display: block;
-    width: 100%;
-    text-align: left;
-    padding: 12px 14px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255, 255, 255, 0.06);
-    color: inherit;
-    cursor: pointer;
-    margin-bottom: 8px;
-    transition: background 0.2s ease;
-  }
+    .progress{
+      height: 10px; border-radius: 999px; overflow:hidden;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(28,42,58,.8);
+    }
+    .bar{height:100%; width:0%; background: linear-gradient(90deg, rgba(125,211,252,.95), rgba(52,211,153,.95));}
 
-  .alt-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-  }
+    /* Story view */
+    .crumbs{display:flex; gap:8px; flex-wrap:wrap; font-size:12px; color:var(--mut)}
+    .title{font-size:22px; margin:10px 0 6px}
+    .subtitle{color:var(--mut); font-size:12px; margin:0}
 
-  .alt-btn.selected {
-    background: rgba(59, 130, 246, 0.25);
-  }
+    .section{margin-top:14px; padding:14px; border-radius: 16px; border:1px solid rgba(28,42,58,.8); background: rgba(0,0,0,.14)}
+    .section h3{margin:0 0 8px; font-size:13px}
+    .section p{margin:0 0 10px; color: rgba(232,238,246,.95)}
+    .section ul{margin:0; padding-left: 18px; color: rgba(232,238,246,.92)}
 
-  .alt-btn.correct {
-    background: rgba(34, 197, 94, 0.25);
-  }
+    .callout{
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border:1px solid rgba(251,191,36,.25);
+      background: rgba(251,191,36,.08);
+    }
+    .callout strong{color: rgba(251,191,36,.95)}
 
-  .alt-btn.wrong {
-    background: rgba(239, 68, 68, 0.25);
-  }
+    footer{
+      margin-top: 22px;
+      color: var(--mut);
+      font-size: 12px;
+      text-align:center;
+    }
 
-  .feedback-controls {
-    display: none;
-    gap: 10px;
-    margin-top: 14px;
-  }
-
-  .btn {
-    padding: 10px 16px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    background: var(--blue);
-    color: #fff;
-    font-weight: 500;
-    transition: background 0.2s ease;
-  }
-
-  .btn:hover {
-    background: #2563eb;
-  }
-
-  .btn-green { background: var(--green); }
-  .btn-red { background: var(--red); }
-
-  .controls {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-
-  #stats {
-    margin-top: 20px;
-    font-size: 14px;
-    color: var(--muted);
-  }
-
-  #comentariosBox {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    margin-top: 20px;
-    padding-top: 10px;
-    display: none;
-  }
-
-  /* --- Comentários mais claros e legíveis --- */
-  .comentario {
-    background: rgba(255, 255, 255, 0.9);
-    color: #1e293b;
-    border: none;
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
-    font-size: 15px;
-    line-height: 1.6;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-  }
-
-  .comentario em {
-    color: #475569;
-  }
-</style>
+    code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <h1>Sala de Questões</h1>
+  <div class="wrap">
+    <div class="spacer"></div>
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Histórias Jurídicas — Demo</h1>
+          <p>Um exemplo simples (lista + página da história + progresso)</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="pill" href="#/">📚 Biblioteca</a>
+        <a class="pill" href="#/revisao">🧠 Revisão</a>
+        <a class="pill" href="#/sobre">ℹ️ Sobre</a>
+      </nav>
+    </header>
 
-    <div id="fontControls">
-      <label for="fontSizeRange">Tamanho da fonte das questões:</label>
-      <input type="range" id="fontSizeRange" min="16" max="28" value="18">
-    </div>
+    <main id="app" class="grid" aria-live="polite"></main>
 
-    <div id="meta">Carregando questões...</div>
-    <div id="enunciado"></div>
-    <div id="alternativas"></div>
-
-    <div class="feedback-controls" id="feedback">
-      <button id="btnAcertou" class="btn btn-green">Acertei</button>
-      <button id="btnErrou" class="btn btn-red">Errei</button>
-    </div>
-
-    <div class="controls">
-      <button id="prevBtn" class="btn">Anterior</button>
-      <button id="nextBtn" class="btn">Próxima</button>
-      <button id="toggleComments" class="btn" style="background: var(--muted);">💬 Comentários</button>
-    </div>
-
-    <div id="stats">Progresso: 0 / 0 — Acertos: 0 — Erros: 0 — Pontos: 0</div>
-
-    <div id="comentariosBox">
-      <strong>Comentários dos alunos:</strong>
-      <div id="comentariosContent"></div>
-    </div>
+    <footer>
+      Feito para você copiar e adaptar. Tudo roda em 1 arquivo HTML (sem backend).
+    </footer>
   </div>
-</div>
 
 <script>
-(async function(){
-  const JSON_FILE = "questoes_qconcursos.json";
-  let questoes = [];
-  let idx = 0;
-  const stats = { total: 0, respondidas: 0, acertos: 0, erros: 0, pontos: 0 };
-  let ultimaSelecionada = null;
-  let comentariosVisiveis = false;
-
-  async function carregar(){
-    try {
-      const res = await fetch(JSON_FILE);
-      questoes = await res.json();
-      stats.total = questoes.length;
-      renderQuestao(0);
-      atualizarStats();
-    } catch(e){
-      document.getElementById('enunciado').textContent = 'Erro ao carregar as questões.';
+  // =============================
+  // 1) DADOS (EXEMPLO)
+  // =============================
+  const STORIES = [
+    {
+      id: "DA-PAP-001",
+      disciplina: "Direito Administrativo",
+      modulo: "Princípios da Administração Pública",
+      topico: "Nepotismo",
+      slug: "nepotismo-hospital-publico",
+      titulo: "A Nomeação da Sobrinha no Hospital Público",
+      data: "2025-12-31",
+      contexto: "Secretaria Municipal de Saúde — Hospital Público Municipal",
+      tags: ["art.37", "moralidade", "impessoalidade", "stf", "sv13"],
+      narrativa:
+        "Em janeiro de 2024, o novo Secretário Municipal de Saúde nomeou sua sobrinha recém-formada para um cargo de confiança na diretoria do Hospital Municipal. Um servidor antigo denunciou ao Ministério Público, alegando nepotismo. O secretário respondeu: ‘É cargo em comissão, posso nomear quem quiser’.",
+      conflito: "Nepotismo na Administração Pública",
+      fundamentos: [
+        "CF/88, art. 37 — moralidade e impessoalidade",
+        "Súmula Vinculante 13 (STF) — vedação de nomeação de parente até 3º grau para cargo em comissão/função de confiança",
+        "Exceção discutida: cargos políticos analisados caso a caso"
+      ],
+      explicacao:
+        "Mesmo em cargo em comissão, a nomeação de parente próximo pode violar moralidade e impessoalidade. O STF consolidou a vedação por meio da Súmula Vinculante 13.",
+      aplicacao:
+        "A nomeação foi questionada e anulada com base na SV 13, exigindo exoneração e apuração de responsabilidade.",
+      ideiaChave:
+        "Cargo em comissão não é passe livre: parente até 3º grau pode configurar nepotismo.",
+      perguntas: [
+        "A vedação ao nepotismo depende de lei específica?",
+        "Cargo em comissão permite nomear qualquer pessoa?",
+        "Cargos políticos sempre escapam da vedação?"
+      ],
+      dicaProva:
+        "Nepotismo é vedado por princípios do art. 37 e pela Súmula Vinculante 13 — normalmente não precisa de lei específica."
+    },
+    {
+      id: "DA-PAP-002",
+      disciplina: "Direito Administrativo",
+      modulo: "Princípios da Administração Pública",
+      topico: "Publicidade",
+      slug: "publicidade-gastos-diario-oficial",
+      titulo: "O Portal que Escondeu os Gastos",
+      data: "2025-12-31",
+      contexto: "Controladoria — Transparência e Diário Oficial",
+      tags: ["publicidade", "transparencia", "eficacia"],
+      narrativa:
+        "A prefeitura publicou um contrato milionário sem detalhar valores no portal e atrasou a publicação no Diário Oficial. A população começou a cobrar: ‘Cadê os gastos?’. A controladoria abriu auditoria para verificar se a falta de publicidade afetava a validade e a eficácia do ato.",
+      conflito: "Princípio da Publicidade",
+      fundamentos: [
+        "Publicidade como regra: publicação para eficácia de atos que produzem efeitos externos e/ou geram ônus ao patrimônio público",
+        "Direito de acesso à informação (CF/88, art. 5º, XXXIII) — ressalvas de sigilo por segurança e dados pessoais"
+      ],
+      explicacao:
+        "Publicidade tem dois sentidos: (1) publicar em órgão oficial como requisito de eficácia em vários atos; (2) transparência como dever de informar, permitindo controle social.",
+      aplicacao:
+        "O ato pode até existir, mas sem a publicidade exigida pode não produzir efeitos (falta de eficácia), além de gerar responsabilização e correção.",
+      ideiaChave:
+        "Sem publicidade, o ato pode não ter eficácia — e a transparência é a regra.",
+      perguntas: [
+        "Publicidade é requisito de validade ou de eficácia?",
+        "Toda informação pública deve ser divulgada?",
+        "Quando o sigilo é admitido?"
+      ],
+      dicaProva:
+        "Guarde: publicação em diário oficial costuma ser requisito de eficácia para atos gerais/externos ou com ônus ao patrimônio público."
+    },
+    {
+      id: "DA-PAP-003",
+      disciplina: "Direito Administrativo",
+      modulo: "Princípios da Administração Pública",
+      topico: "Eficiência",
+      slug: "eficiencia-fila-zerada",
+      titulo: "A Fila Zerada (do Jeito Errado)",
+      data: "2025-12-31",
+      contexto: "UPA — Gestão e Atendimento",
+      tags: ["eficiencia", "qualidade", "custo"],
+      narrativa:
+        "Para ‘zerar a fila’, a direção de uma UPA mandou acelerar atendimentos e cortar etapas essenciais. Em duas semanas, aumentaram reclamações e retornos de pacientes. A gestão alegou eficiência: ‘Atendemos mais rápido’. A equipe questionou: ‘E a qualidade?’.",
+      conflito: "Princípio da Eficiência",
+      fundamentos: [
+        "Eficiência: prestar serviços de qualidade com menor custo e no menor tempo possível, em harmonia com os demais princípios",
+        "Eficiência possui dimensão do agente (melhor atuação) e da organização (melhor estrutura)"
+      ],
+      explicacao:
+        "Eficiência não é só rapidez. É resultado com qualidade, evitando desperdícios, respeitando legalidade, moralidade e segurança do serviço.",
+      aplicacao:
+        "A corregedoria determinou revisão dos fluxos, recomposição das etapas mínimas e metas de qualidade; rapidez sem qualidade não atende a eficiência.",
+      ideiaChave:
+        "Eficiência = resultado bom + qualidade + tempo/custo razoáveis.",
+      perguntas: [
+        "Eficiência pode justificar violação de outros princípios?",
+        "Eficiência é só reduzir tempo?",
+        "Quais dimensões a doutrina costuma apontar?"
+      ],
+      dicaProva:
+        "Eficiência entrou no art. 37 por EC 19/1998 e deve ser aplicada em harmonia com os demais princípios."
     }
+  ];
+
+  // =============================
+  // 2) ESTADO (PROGRESSO)
+  // =============================
+  const STORAGE_KEY = "hj_demo_progress_v1";
+  const loadProgress = () => {
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") }catch{ return {} }
+  };
+  const saveProgress = (p) => localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+
+  function isDone(id){ return !!loadProgress()[id]; }
+  function toggleDone(id){
+    const p = loadProgress();
+    p[id] = !p[id];
+    saveProgress(p);
+    render();
   }
 
-  function atualizarStats(){
-    document.getElementById('stats').textContent = 
-      `Progresso: ${stats.respondidas} / ${stats.total} — Acertos: ${stats.acertos} — Erros: ${stats.erros} — Pontos: ${stats.pontos}`;
+  // =============================
+  // 3) HELPERS
+  // =============================
+  const $app = document.querySelector("#app");
+  const fmtDate = (iso) => {
+    const [y,m,d] = iso.split("-").map(Number);
+    return `${String(d).padStart(2,"0")}/${String(m).padStart(2,"0")}/${y}`;
+  };
+  const escapeHtml = (s) => s
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+  function percentDone(){
+    const p = loadProgress();
+    const done = STORIES.filter(s => p[s.id]).length;
+    return {
+      done,
+      total: STORIES.length,
+      pct: STORIES.length ? Math.round((done / STORIES.length) * 100) : 0
+    };
   }
 
-  function renderQuestao(i){
-    if(!questoes.length) return;
-    idx = ((i % questoes.length) + questoes.length) % questoes.length;
-    const q = questoes[idx];
+  // =============================
+  // 4) ROTAS
+  // =============================
+  function route(){
+    const h = location.hash || "#/";
+    const parts = h.replace(/^#\//, "").split("/");
+    // "" | "story" | "revisao" | "sobre"
+    if(parts[0] === "story" && parts[1]) return { name:"story", slug: parts[1] };
+    if(parts[0] === "revisao") return { name:"revisao" };
+    if(parts[0] === "sobre") return { name:"sobre" };
+    return { name:"home" };
+  }
 
-    document.getElementById("meta").textContent = `${q.dados?.prova || ''} • ${q.dados?.ano || ''}`;
-    document.getElementById("enunciado").innerHTML = q.enunciado;
+  // =============================
+  // 5) VIEWS
+  // =============================
+  function viewSidebar(){
+    const {done,total,pct} = percentDone();
+    return `
+      <section class="card">
+        <div class="hd">
+          <h2 class="h2">Seu progresso</h2>
+          <div class="mut">Você pode marcar histórias como estudadas (salvo no navegador).</div>
+          <div style="margin-top:10px" class="progress" aria-label="Progresso do módulo">
+            <div class="bar" style="width:${pct}%"></div>
+          </div>
+          <div class="toolbar" style="justify-content:space-between; margin-top:10px">
+            <div class="mut"><strong style="color:var(--txt)">${done}</strong>/${total} concluídas • <strong style="color:var(--txt)">${pct}%</strong></div>
+            <button class="btn" id="btnReset">Resetar</button>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="kpis">
+            <div class="kpi"><div class="n">${total}</div><div class="l">Histórias</div></div>
+            <div class="kpi"><div class="n">${done}</div><div class="l">Concluídas</div></div>
+            <div class="kpi"><div class="n">${Math.max(total-done,0)}</div><div class="l">Pendentes</div></div>
+          </div>
+          <div class="callout" style="margin-top:12px">
+            <strong>Dica:</strong> deixe cada história como um JSON. Assim você renderiza no site, gera questões e cria revisão automática.
+          </div>
+        </div>
+      </section>
+    `;
+  }
 
-    const altContainer = document.getElementById("alternativas");
-    altContainer.innerHTML = '';
-    document.getElementById('comentariosContent').innerHTML = '';
-    document.getElementById('feedback').style.display = 'none';
-    ultimaSelecionada = null;
+  function viewHome(){
+    return `
+      <section class="card">
+        <div class="hd">
+          <h2 class="h2">Biblioteca</h2>
+          <div class="mut">Pesquise por título, tópico ou tags. Clique para abrir a história.</div>
+          <div class="toolbar">
+            <input id="q" type="search" placeholder="Buscar… ex: nepotismo, publicidade, art. 37" autocomplete="off" />
+          </div>
+        </div>
+        <div class="bd">
+          <div id="list" class="list"></div>
+        </div>
+      </section>
+      ${viewSidebar()}
+    `;
+  }
 
-    (q.alternativas || []).forEach(a => {
-      const btn = document.createElement('button');
-      btn.className = 'alt-btn';
-      btn.textContent = `${a.letra}) ${a.texto}`;
+  function renderList(filter=""){
+    const q = filter.trim().toLowerCase();
+    const rows = STORIES
+      .filter(s => {
+        if(!q) return true;
+        const hay = [s.titulo, s.topico, s.disciplina, s.modulo, s.contexto, ...(s.tags||[])].join(" ").toLowerCase();
+        return hay.includes(q);
+      })
+      .map(s => {
+        const done = isDone(s.id);
+        return `
+          <a class="item" href="#/story/${encodeURIComponent(s.slug)}" aria-label="Abrir história ${escapeHtml(s.titulo)}">
+            <div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+                <strong>${escapeHtml(s.titulo)}</strong>
+                <span class="tag ${done ? "ok" : ""}">${done ? "✓ estudada" : "pendente"}</span>
+              </div>
+              <div class="mut" style="margin-top:4px">
+                ${escapeHtml(s.disciplina)} • ${escapeHtml(s.modulo)} • ${escapeHtml(s.topico)} • ${fmtDate(s.data)}
+              </div>
+              <div class="meta">
+                <span class="tag acc">${escapeHtml(s.topico)}</span>
+                ${(s.tags||[]).slice(0,4).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(" ")}
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center">
+              <span class="mut">Abrir →</span>
+            </div>
+          </a>
+        `;
+      })
+      .join("");
 
-      if (q.status === 'acertou' && a.letra === q.alternativaSelecionada) btn.classList.add('correct');
-      if (q.status === 'errou' && a.letra === q.alternativaSelecionada) btn.classList.add('wrong');
-      if (a.letra === q.alternativaSelecionada) ultimaSelecionada = btn;
+    const el = document.querySelector("#list");
+    if(!el) return;
+    el.innerHTML = rows || `<div class="mut">Nenhuma história encontrada.</div>`;
+  }
 
-      btn.onclick = () => {
-        document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        ultimaSelecionada = btn;
-        q.alternativaSelecionada = a.letra;
-        mostrarComentarios(q);
-        document.getElementById('feedback').style.display = 'flex';
+  function viewStory(story){
+    if(!story){
+      return `
+        <section class="card">
+          <div class="hd"><h2 class="h2">História não encontrada</h2></div>
+          <div class="bd"><a class="btn" href="#/">Voltar</a></div>
+        </section>
+        ${viewSidebar()}
+      `;
+    }
+
+    const done = isDone(story.id);
+    const idx = STORIES.findIndex(s => s.id === story.id);
+    const prev = STORIES[idx-1];
+    const next = STORIES[idx+1];
+
+    return `
+      <section class="card">
+        <div class="hd">
+          <div class="crumbs">
+            <a class="pill" href="#/">📚 Biblioteca</a>
+            <span>›</span>
+            <span>${escapeHtml(story.disciplina)}</span>
+            <span>•</span>
+            <span>${escapeHtml(story.modulo)}</span>
+            <span>•</span>
+            <span>${escapeHtml(story.topico)}</span>
+          </div>
+          <h2 class="title">${escapeHtml(story.titulo)}</h2>
+          <p class="subtitle">📍 ${escapeHtml(story.contexto)} • 📅 ${fmtDate(story.data)} • <code>${escapeHtml(story.id)}</code></p>
+          <div class="toolbar" style="margin-top:12px">
+            <button class="btn ${done ? "ok" : "primary"}" id="btnDone">${done ? "✓ Marcada como estudada" : "Marcar como estudada"}</button>
+            <a class="btn" href="#/">Voltar para biblioteca</a>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="section">
+            <h3>🧍 Narrativa</h3>
+            <p>${escapeHtml(story.narrativa)}</p>
+          </div>
+
+          <div class="section">
+            <h3>⚖️ O Conflito</h3>
+            <p><strong>${escapeHtml(story.conflito)}</strong></p>
+          </div>
+
+          <div class="section">
+            <h3>📚 Leis, princípios e jurisprudência</h3>
+            <ul>
+              ${(story.fundamentos||[]).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
+            </ul>
+          </div>
+
+          <div class="section">
+            <h3>🧩 Explicação do conceito</h3>
+            <p>${escapeHtml(story.explicacao)}</p>
+          </div>
+
+          <div class="section">
+            <h3>🧑‍⚖️ Aplicação</h3>
+            <p>${escapeHtml(story.aplicacao)}</p>
+          </div>
+
+          <div class="callout">
+            <div class="mut" style="margin-bottom:6px">🧠 Ideia‑chave</div>
+            <div style="font-size:14px"><strong>${escapeHtml(story.ideiaChave)}</strong></div>
+          </div>
+
+          <div class="section">
+            <h3>❓ Para reflexão (estilo concurso)</h3>
+            <ul>
+              ${(story.perguntas||[]).map((q,i) => `<li><strong>${i+1}.</strong> ${escapeHtml(q)}</li>`).join("")}
+            </ul>
+          </div>
+
+          <div class="section">
+            <h3>💡 Dica de prova</h3>
+            <p>${escapeHtml(story.dicaProva)}</p>
+          </div>
+
+          <div class="toolbar" style="justify-content:space-between; margin-top:14px">
+            <div style="display:flex; gap:10px; flex-wrap:wrap">
+              ${prev ? `<a class="btn" href="#/story/${encodeURIComponent(prev.slug)}">← Anterior</a>` : `<span class="mut">← Anterior</span>`}
+              ${next ? `<a class="btn" href="#/story/${encodeURIComponent(next.slug)}">Próxima →</a>` : `<span class="mut">Próxima →</span>`}
+            </div>
+            <a class="btn" href="#/">Biblioteca</a>
+          </div>
+        </div>
+      </section>
+      ${viewSidebar()}
+    `;
+  }
+
+  function viewRevisao(){
+    const p = loadProgress();
+    const done = STORIES.filter(s => p[s.id]);
+    const pend = STORIES.filter(s => !p[s.id]);
+
+    return `
+      <section class="card">
+        <div class="hd">
+          <h2 class="h2">🧠 Revisão</h2>
+          <div class="mut">Aqui aparece só o essencial: ideia‑chave + dica de prova.</div>
+        </div>
+        <div class="bd">
+          <div class="section">
+            <h3>✅ Estudadas (${done.length})</h3>
+            ${done.length ? done.map(s => `
+              <div class="item" style="align-items:center">
+                <div>
+                  <strong>${escapeHtml(s.titulo)}</strong>
+                  <div class="mut" style="margin-top:4px">${escapeHtml(s.ideiaChave)}</div>
+                  <div class="mut" style="margin-top:4px"><strong>Dica:</strong> ${escapeHtml(s.dicaProva)}</div>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center">
+                  <a class="btn" href="#/story/${encodeURIComponent(s.slug)}">Abrir</a>
+                  <button class="btn" onclick="toggleDone('${s.id}')">Desmarcar</button>
+                </div>
+              </div>
+            `).join("") : `<div class="mut">Nenhuma história marcada ainda.</div>`}
+          </div>
+
+          <div class="section">
+            <h3>📌 Pendentes (${pend.length})</h3>
+            ${pend.length ? pend.map(s => `
+              <div class="item" style="align-items:center">
+                <div>
+                  <strong>${escapeHtml(s.titulo)}</strong>
+                  <div class="mut" style="margin-top:4px">${escapeHtml(s.topico)} • ${fmtDate(s.data)}</div>
+                </div>
+                <a class="btn" href="#/story/${encodeURIComponent(s.slug)}">Abrir</a>
+              </div>
+            `).join("") : `<div class="mut">Tudo concluído 🎉</div>`}
+          </div>
+        </div>
+      </section>
+      ${viewSidebar()}
+    `;
+  }
+
+  function viewSobre(){
+    return `
+      <section class="card">
+        <div class="hd">
+          <h2 class="h2">ℹ️ Sobre este exemplo</h2>
+          <div class="mut">O objetivo é te dar um “esqueleto” pronto para o seu site.</div>
+        </div>
+        <div class="bd">
+          <div class="section">
+            <h3>Como usar</h3>
+            <ul>
+              <li>Copie este arquivo <code>.html</code> e abra no navegador.</li>
+              <li>Edite o array <code>STORIES</code> para colocar suas histórias reais.</li>
+              <li>Quando tiver muitas histórias, você pode carregar um <code>stories.json</code> externo.</li>
+            </ul>
+          </div>
+          <div class="section">
+            <h3>Próximo passo recomendado</h3>
+            <ul>
+              <li>Separar histórias por <strong>disciplina</strong> e <strong>módulo</strong>.</li>
+              <li>Adicionar <strong>filtro por módulo</strong> e <strong>página de módulo</strong>.</li>
+              <li>Colocar um backend (ou CMS) quando você quiser login, compra e sincronização de progresso.</li>
+            </ul>
+          </div>
+          <a class="btn" href="#/">Voltar</a>
+        </div>
+      </section>
+      ${viewSidebar()}
+    `;
+  }
+
+  // =============================
+  // 6) RENDER
+  // =============================
+  function bindCommon(){
+    const reset = document.querySelector("#btnReset");
+    if(reset){
+      reset.onclick = () => {
+        localStorage.removeItem(STORAGE_KEY);
+        render();
       };
-      altContainer.appendChild(btn);
-    });
-
-    if (q.respondida) mostrarComentarios(q);
+    }
   }
 
-  function mostrarComentarios(q){
-    const box = document.getElementById('comentariosBox');
-    const content = document.getElementById('comentariosContent');
-    content.innerHTML = '';
+  function render(){
+    const r = route();
 
-    if(q.comentarios?.itens?.length){
-      q.comentarios.itens.forEach(c => {
-        const bloco = document.createElement('div');
-        bloco.className = 'comentario';
-        bloco.innerHTML = c;
-        content.appendChild(bloco);
-      });
-    } else {
-      content.innerHTML = '<div class="comentario"><em>Sem comentários.</em></div>';
+    if(r.name === "home"){
+      $app.innerHTML = viewHome();
+      renderList("");
+      const q = document.querySelector("#q");
+      if(q){
+        q.addEventListener("input", () => renderList(q.value));
+        q.focus();
+      }
+      bindCommon();
+      return;
     }
 
-    box.style.display = 'block';
+    if(r.name === "story"){
+      const story = STORIES.find(s => s.slug === decodeURIComponent(r.slug));
+      $app.innerHTML = viewStory(story);
+      const btn = document.querySelector("#btnDone");
+      if(btn && story){ btn.onclick = () => toggleDone(story.id); }
+      bindCommon();
+      return;
+    }
+
+    if(r.name === "revisao"){
+      $app.innerHTML = viewRevisao();
+      bindCommon();
+      return;
+    }
+
+    if(r.name === "sobre"){
+      $app.innerHTML = viewSobre();
+      bindCommon();
+      return;
+    }
   }
 
-  document.getElementById('btnAcertou').onclick = () => {
-    if (ultimaSelecionada) {
-      ultimaSelecionada.classList.remove('wrong');
-      ultimaSelecionada.classList.add('correct');
-      const q = questoes[idx];
-      q.respondida = true;
-      q.status = 'acertou';
-      q.alternativaSelecionada = ultimaSelecionada.textContent.charAt(0);
-      stats.acertos++;
-      stats.respondidas++;
-      stats.pontos += 10;
-      atualizarStats();
-      mostrarComentarios(q);
-    }
-  };
-
-  document.getElementById('btnErrou').onclick = () => {
-    if (ultimaSelecionada) {
-      ultimaSelecionada.classList.remove('correct');
-      ultimaSelecionada.classList.add('wrong');
-      const q = questoes[idx];
-      q.respondida = true;
-      q.status = 'errou';
-      q.alternativaSelecionada = ultimaSelecionada.textContent.charAt(0);
-      stats.erros++;
-      stats.respondidas++;
-      stats.pontos -= 5;
-      atualizarStats();
-      mostrarComentarios(q);
-    }
-  };
-
-  document.getElementById('toggleComments').onclick = () => {
-    comentariosVisiveis = !comentariosVisiveis;
-    const box = document.getElementById('comentariosBox');
-    box.style.display = comentariosVisiveis ? 'block' : 'none';
-  };
-
-  document.getElementById('nextBtn').onclick = () => renderQuestao(idx + 1);
-  document.getElementById('prevBtn').onclick = () => renderQuestao(idx - 1);
-
-  document.getElementById('fontSizeRange').addEventListener('input', (e) => {
-    document.getElementById('enunciado').style.fontSize = e.target.value + 'px';
-  });
-
-  await carregar();
-})();
+  window.addEventListener("hashchange", render);
+  render();
 </script>
 </body>
 </html>
-
