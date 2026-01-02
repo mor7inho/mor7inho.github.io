@@ -1,654 +1,1381 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Histórias Jurídicas — Demo</title>
-  <style>
-    :root{
-      --bg:#0b0f14; --card:#101824; --card2:#0f1722; --txt:#e8eef6; --mut:#9fb0c3;
-      --line:#1c2a3a; --acc:#7dd3fc; --ok:#34d399; --warn:#fbbf24;
-      --shadow: 0 12px 30px rgba(0,0,0,.35);
-      --r:18px;
-      --w: 1100px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--txt); background: radial-gradient(1200px 900px at 15% 5%, rgba(125,211,252,.10), transparent 55%),
-              radial-gradient(1100px 900px at 85% 0%, rgba(52,211,153,.10), transparent 55%),
-              var(--bg);
-      line-height:1.5;
-    }
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:var(--w); margin:0 auto; padding:22px 18px 70px}
-    header{
-      display:flex; gap:14px; align-items:center; justify-content:space-between;
-      padding:14px 14px; border:1px solid var(--line); border-radius: var(--r);
-      background: linear-gradient(180deg, rgba(16,24,36,.92), rgba(11,15,20,.86));
-      box-shadow: var(--shadow);
-      position: sticky; top: 10px; z-index: 10;
-      backdrop-filter: blur(10px);
-    }
-    .brand{display:flex; gap:12px; align-items:center}
-    .logo{
-      width:40px; height:40px; border-radius: 14px;
-      background: linear-gradient(135deg, rgba(125,211,252,.95), rgba(52,211,153,.95));
-      box-shadow: 0 10px 22px rgba(0,0,0,.25);
-    }
-    .brand h1{font-size:14px; margin:0}
-    .brand p{font-size:12px; margin:2px 0 0; color:var(--mut)}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JurisStories - Estude Direito Administrativo com Histórias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --primary-dark: #1a252f;
+            --secondary: #3498db;
+            --secondary-dark: #2980b9;
+            --accent: #e74c3c;
+            --accent-dark: #c0392b;
+            --success: #27ae60;
+            --success-dark: #229954;
+            --warning: #f39c12;
+            --warning-dark: #d68910;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border: #dfe6e9;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
 
-    .nav{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
-    .pill{
-      padding:9px 12px; border-radius: 999px;
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      color: var(--txt);
-      font-size: 12px;
-    }
-    .pill:hover{border-color: rgba(125,211,252,.5)}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    .grid{
-      margin-top: 18px;
-      display:grid; grid-template-columns: 1.2fr .8fr; gap: 16px;
-    }
-    @media (max-width: 920px){
-      .grid{grid-template-columns: 1fr;}
-      header{top:0; border-radius: 0; border-left:none; border-right:none;}
-      .wrap{padding:0 14px 70px}
-      .spacer{height:12px}
-    }
+        body {
+            background-color: #f8f9fa;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
 
-    .card{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: linear-gradient(180deg, rgba(16,24,36,.92), rgba(15,23,34,.86));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{padding:16px 16px 10px; border-bottom:1px solid rgba(28,42,58,.6)}
-    .card .bd{padding:16px}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    .h2{font-size:14px; margin:0 0 6px}
-    .mut{color:var(--mut); font-size:12px}
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
 
-    .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px}
-    input[type="search"]{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.18);
-      color: var(--txt);
-      outline:none;
-    }
-    input[type="search"]:focus{border-color: rgba(125,211,252,.55)}
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .kpis{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;}
-    .kpi{padding:12px; border-radius: 16px; border:1px solid var(--line); background: rgba(255,255,255,.03)}
-    .kpi .n{font-size:18px; font-weight:700}
-    .kpi .l{font-size:12px; color:var(--mut)}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-    .list{display:flex; flex-direction:column; gap:10px}
-    .item{
-      padding: 12px 12px;
-      border:1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(255,255,255,.03);
-      display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
-    }
-    .item:hover{border-color: rgba(125,211,252,.45)}
-    .meta{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
-    .tag{
-      font-size: 11px; color: var(--mut);
-      padding: 5px 9px; border-radius: 999px;
-      border:1px solid rgba(28,42,58,.8);
-      background: rgba(0,0,0,.12);
-    }
-    .tag.acc{color: rgba(125,211,252,.95); border-color: rgba(125,211,252,.25)}
-    .tag.ok{color: rgba(52,211,153,.95); border-color: rgba(52,211,153,.25)}
+        .logo i {
+            font-size: 2rem;
+        }
 
-    .btn{
-      padding: 10px 12px; border-radius: 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color:var(--txt);
-      font-weight:600; font-size:12px;
-      cursor:pointer;
-    }
-    .btn:hover{border-color: rgba(125,211,252,.5)}
-    .btn.primary{border-color: rgba(125,211,252,.35); background: rgba(125,211,252,.10)}
-    .btn.ok{border-color: rgba(52,211,153,.35); background: rgba(52,211,153,.10)}
+        .logo h1 {
+            font-size: 1.5rem;
+        }
 
-    .progress{
-      height: 10px; border-radius: 999px; overflow:hidden;
-      background: rgba(0,0,0,.22);
-      border:1px solid rgba(28,42,58,.8);
-    }
-    .bar{height:100%; width:0%; background: linear-gradient(90deg, rgba(125,211,252,.95), rgba(52,211,153,.95));}
+        .logo p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
 
-    /* Story view */
-    .crumbs{display:flex; gap:8px; flex-wrap:wrap; font-size:12px; color:var(--mut)}
-    .title{font-size:22px; margin:10px 0 6px}
-    .subtitle{color:var(--mut); font-size:12px; margin:0}
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-    .section{margin-top:14px; padding:14px; border-radius: 16px; border:1px solid rgba(28,42,58,.8); background: rgba(0,0,0,.14)}
-    .section h3{margin:0 0 8px; font-size:13px}
-    .section p{margin:0 0 10px; color: rgba(232,238,246,.95)}
-    .section ul{margin:0; padding-left: 18px; color: rgba(232,238,246,.92)}
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
 
-    .callout{
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 16px;
-      border:1px solid rgba(251,191,36,.25);
-      background: rgba(251,191,36,.08);
-    }
-    .callout strong{color: rgba(251,191,36,.95)}
+        /* MAIN CONTENT */
+        main {
+            margin-top: 80px;
+            padding: 2rem 0;
+        }
 
-    footer{
-      margin-top: 22px;
-      color: var(--mut);
-      font-size: 12px;
-      text-align:center;
-    }
+        /* DASHBOARD */
+        .dashboard {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
 
-    code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-  </style>
+        .module-info {
+            margin-bottom: 2rem;
+        }
+
+        .module-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* FILTERS */
+        .filters {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        select {
+            padding: 0.8rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+        }
+
+        /* CASES GRID */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--secondary);
+        }
+
+        .case-header {
+            background: linear-gradient(135deg, var(--light), #dfe6e9);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .case-code {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .case-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .case-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .case-body {
+            padding: 1.5rem;
+        }
+
+        .case-topic {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .case-context {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--secondary);
+            padding-left: 0.8rem;
+        }
+
+        .case-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .case-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-not-started {
+            background: #e8f6f3;
+            color: var(--success);
+        }
+
+        .status-in-progress {
+            background: #fdebd0;
+            color: var(--warning);
+        }
+
+        .status-completed {
+            background: #d4efdf;
+            color: var(--success);
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--secondary);
+            background: #f0f7ff;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* CASE DETAIL */
+        .case-detail {
+            display: none;
+        }
+
+        .case-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .back-button {
+            margin-bottom: 1.5rem;
+        }
+
+        .case-header-detail {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .case-detail-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .case-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            padding: 0.4rem 0.8rem;
+            background: var(--light);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .tag-level {
+            background: #d6eaf8;
+            color: var(--secondary);
+        }
+
+        .tag-priority {
+            background: #fadbd8;
+            color: var(--accent);
+        }
+
+        .tag-topic {
+            background: #e8f6f3;
+            color: var(--success);
+        }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-content {
+            line-height: 1.7;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+
+        .section-content strong {
+            color: var(--primary);
+        }
+
+        .section-content ul, .section-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* KEY IDEA */
+        .key-idea {
+            background: linear-gradient(135deg, #e8f6f3, #d1f2eb);
+            border-left-color: var(--success);
+        }
+
+        .key-idea .section-title {
+            color: var(--success);
+        }
+
+        /* PROOF TIP */
+        .proof-tip {
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border-left-color: var(--warning);
+        }
+
+        .proof-tip .section-title {
+            color: var(--warning);
+        }
+
+        /* MNEMONICS */
+        .mnemonics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .mnemonic-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px dashed var(--border);
+        }
+
+        /* QUESTIONS */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .question-header {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .options {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option:hover {
+            border-color: var(--secondary);
+            background: #f0f7ff;
+        }
+
+        .option.selected {
+            border-color: var(--secondary);
+            background: #d6eaf8;
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: #d4efdf;
+        }
+
+        .option.incorrect {
+            border-color: var(--accent);
+            background: #fadbd8;
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .feedback {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-top: 1px solid var(--border);
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        /* ACTIONS */
+        .case-actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--light);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .case-counter {
+            color: var(--text-secondary);
+        }
+
+        /* LOADING */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--light);
+            border-top: 4px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* UTILITIES */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 2rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 2rem;
+        }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* ERROR */
+        .error {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .error i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .case-detail-title {
+                font-size: 1.5rem;
+            }
+            
+            .case-actions-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="spacer"></div>
+    <!-- HEADER -->
     <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>Histórias Jurídicas — Demo</h1>
-          <p>Um exemplo simples (lista + página da história + progresso)</p>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-balance-scale"></i>
+                    <div>
+                        <h1>JurisStories</h1>
+                        <p>Direito Administrativo com Histórias</p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">EJ</div>
+                    <div>
+                        <div style="font-weight: 600;">Estudante Jurídico</div>
+                        <div style="font-size: 0.8rem;">Progresso: <span id="header-progress">0%</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <nav class="nav">
-        <a class="pill" href="#/">📚 Biblioteca</a>
-        <a class="pill" href="#/revisao">🧠 Revisão</a>
-        <a class="pill" href="#/sobre">ℹ️ Sobre</a>
-      </nav>
     </header>
 
-    <main id="app" class="grid" aria-live="polite"></main>
-
-    <footer>
-      Feito para você copiar e adaptar. Tudo roda em 1 arquivo HTML (sem backend).
-    </footer>
-  </div>
-
-<script>
-  // =============================
-  // 1) DADOS (EXEMPLO)
-  // =============================
-  const STORIES = [
-    {
-      id: "DA-PAP-001",
-      disciplina: "Direito Administrativo",
-      modulo: "Princípios da Administração Pública",
-      topico: "Nepotismo",
-      slug: "nepotismo-hospital-publico",
-      titulo: "A Nomeação da Sobrinha no Hospital Público",
-      data: "2025-12-31",
-      contexto: "Secretaria Municipal de Saúde — Hospital Público Municipal",
-      tags: ["art.37", "moralidade", "impessoalidade", "stf", "sv13"],
-      narrativa:
-        "Em janeiro de 2024, o novo Secretário Municipal de Saúde nomeou sua sobrinha recém-formada para um cargo de confiança na diretoria do Hospital Municipal. Um servidor antigo denunciou ao Ministério Público, alegando nepotismo. O secretário respondeu: ‘É cargo em comissão, posso nomear quem quiser’.",
-      conflito: "Nepotismo na Administração Pública",
-      fundamentos: [
-        "CF/88, art. 37 — moralidade e impessoalidade",
-        "Súmula Vinculante 13 (STF) — vedação de nomeação de parente até 3º grau para cargo em comissão/função de confiança",
-        "Exceção discutida: cargos políticos analisados caso a caso"
-      ],
-      explicacao:
-        "Mesmo em cargo em comissão, a nomeação de parente próximo pode violar moralidade e impessoalidade. O STF consolidou a vedação por meio da Súmula Vinculante 13.",
-      aplicacao:
-        "A nomeação foi questionada e anulada com base na SV 13, exigindo exoneração e apuração de responsabilidade.",
-      ideiaChave:
-        "Cargo em comissão não é passe livre: parente até 3º grau pode configurar nepotismo.",
-      perguntas: [
-        "A vedação ao nepotismo depende de lei específica?",
-        "Cargo em comissão permite nomear qualquer pessoa?",
-        "Cargos políticos sempre escapam da vedação?"
-      ],
-      dicaProva:
-        "Nepotismo é vedado por princípios do art. 37 e pela Súmula Vinculante 13 — normalmente não precisa de lei específica."
-    },
-    {
-      id: "DA-PAP-002",
-      disciplina: "Direito Administrativo",
-      modulo: "Princípios da Administração Pública",
-      topico: "Publicidade",
-      slug: "publicidade-gastos-diario-oficial",
-      titulo: "O Portal que Escondeu os Gastos",
-      data: "2025-12-31",
-      contexto: "Controladoria — Transparência e Diário Oficial",
-      tags: ["publicidade", "transparencia", "eficacia"],
-      narrativa:
-        "A prefeitura publicou um contrato milionário sem detalhar valores no portal e atrasou a publicação no Diário Oficial. A população começou a cobrar: ‘Cadê os gastos?’. A controladoria abriu auditoria para verificar se a falta de publicidade afetava a validade e a eficácia do ato.",
-      conflito: "Princípio da Publicidade",
-      fundamentos: [
-        "Publicidade como regra: publicação para eficácia de atos que produzem efeitos externos e/ou geram ônus ao patrimônio público",
-        "Direito de acesso à informação (CF/88, art. 5º, XXXIII) — ressalvas de sigilo por segurança e dados pessoais"
-      ],
-      explicacao:
-        "Publicidade tem dois sentidos: (1) publicar em órgão oficial como requisito de eficácia em vários atos; (2) transparência como dever de informar, permitindo controle social.",
-      aplicacao:
-        "O ato pode até existir, mas sem a publicidade exigida pode não produzir efeitos (falta de eficácia), além de gerar responsabilização e correção.",
-      ideiaChave:
-        "Sem publicidade, o ato pode não ter eficácia — e a transparência é a regra.",
-      perguntas: [
-        "Publicidade é requisito de validade ou de eficácia?",
-        "Toda informação pública deve ser divulgada?",
-        "Quando o sigilo é admitido?"
-      ],
-      dicaProva:
-        "Guarde: publicação em diário oficial costuma ser requisito de eficácia para atos gerais/externos ou com ônus ao patrimônio público."
-    },
-    {
-      id: "DA-PAP-003",
-      disciplina: "Direito Administrativo",
-      modulo: "Princípios da Administração Pública",
-      topico: "Eficiência",
-      slug: "eficiencia-fila-zerada",
-      titulo: "A Fila Zerada (do Jeito Errado)",
-      data: "2025-12-31",
-      contexto: "UPA — Gestão e Atendimento",
-      tags: ["eficiencia", "qualidade", "custo"],
-      narrativa:
-        "Para ‘zerar a fila’, a direção de uma UPA mandou acelerar atendimentos e cortar etapas essenciais. Em duas semanas, aumentaram reclamações e retornos de pacientes. A gestão alegou eficiência: ‘Atendemos mais rápido’. A equipe questionou: ‘E a qualidade?’.",
-      conflito: "Princípio da Eficiência",
-      fundamentos: [
-        "Eficiência: prestar serviços de qualidade com menor custo e no menor tempo possível, em harmonia com os demais princípios",
-        "Eficiência possui dimensão do agente (melhor atuação) e da organização (melhor estrutura)"
-      ],
-      explicacao:
-        "Eficiência não é só rapidez. É resultado com qualidade, evitando desperdícios, respeitando legalidade, moralidade e segurança do serviço.",
-      aplicacao:
-        "A corregedoria determinou revisão dos fluxos, recomposição das etapas mínimas e metas de qualidade; rapidez sem qualidade não atende a eficiência.",
-      ideiaChave:
-        "Eficiência = resultado bom + qualidade + tempo/custo razoáveis.",
-      perguntas: [
-        "Eficiência pode justificar violação de outros princípios?",
-        "Eficiência é só reduzir tempo?",
-        "Quais dimensões a doutrina costuma apontar?"
-      ],
-      dicaProva:
-        "Eficiência entrou no art. 37 por EC 19/1998 e deve ser aplicada em harmonia com os demais princípios."
-    }
-  ];
-
-  // =============================
-  // 2) ESTADO (PROGRESSO)
-  // =============================
-  const STORAGE_KEY = "hj_demo_progress_v1";
-  const loadProgress = () => {
-    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") }catch{ return {} }
-  };
-  const saveProgress = (p) => localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
-
-  function isDone(id){ return !!loadProgress()[id]; }
-  function toggleDone(id){
-    const p = loadProgress();
-    p[id] = !p[id];
-    saveProgress(p);
-    render();
-  }
-
-  // =============================
-  // 3) HELPERS
-  // =============================
-  const $app = document.querySelector("#app");
-  const fmtDate = (iso) => {
-    const [y,m,d] = iso.split("-").map(Number);
-    return `${String(d).padStart(2,"0")}/${String(m).padStart(2,"0")}/${y}`;
-  };
-  const escapeHtml = (s) => s
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-  function percentDone(){
-    const p = loadProgress();
-    const done = STORIES.filter(s => p[s.id]).length;
-    return {
-      done,
-      total: STORIES.length,
-      pct: STORIES.length ? Math.round((done / STORIES.length) * 100) : 0
-    };
-  }
-
-  // =============================
-  // 4) ROTAS
-  // =============================
-  function route(){
-    const h = location.hash || "#/";
-    const parts = h.replace(/^#\//, "").split("/");
-    // "" | "story" | "revisao" | "sobre"
-    if(parts[0] === "story" && parts[1]) return { name:"story", slug: parts[1] };
-    if(parts[0] === "revisao") return { name:"revisao" };
-    if(parts[0] === "sobre") return { name:"sobre" };
-    return { name:"home" };
-  }
-
-  // =============================
-  // 5) VIEWS
-  // =============================
-  function viewSidebar(){
-    const {done,total,pct} = percentDone();
-    return `
-      <section class="card">
-        <div class="hd">
-          <h2 class="h2">Seu progresso</h2>
-          <div class="mut">Você pode marcar histórias como estudadas (salvo no navegador).</div>
-          <div style="margin-top:10px" class="progress" aria-label="Progresso do módulo">
-            <div class="bar" style="width:${pct}%"></div>
-          </div>
-          <div class="toolbar" style="justify-content:space-between; margin-top:10px">
-            <div class="mut"><strong style="color:var(--txt)">${done}</strong>/${total} concluídas • <strong style="color:var(--txt)">${pct}%</strong></div>
-            <button class="btn" id="btnReset">Resetar</button>
-          </div>
-        </div>
-        <div class="bd">
-          <div class="kpis">
-            <div class="kpi"><div class="n">${total}</div><div class="l">Histórias</div></div>
-            <div class="kpi"><div class="n">${done}</div><div class="l">Concluídas</div></div>
-            <div class="kpi"><div class="n">${Math.max(total-done,0)}</div><div class="l">Pendentes</div></div>
-          </div>
-          <div class="callout" style="margin-top:12px">
-            <strong>Dica:</strong> deixe cada história como um JSON. Assim você renderiza no site, gera questões e cria revisão automática.
-          </div>
-        </div>
-      </section>
-    `;
-  }
-
-  function viewHome(){
-    return `
-      <section class="card">
-        <div class="hd">
-          <h2 class="h2">Biblioteca</h2>
-          <div class="mut">Pesquise por título, tópico ou tags. Clique para abrir a história.</div>
-          <div class="toolbar">
-            <input id="q" type="search" placeholder="Buscar… ex: nepotismo, publicidade, art. 37" autocomplete="off" />
-          </div>
-        </div>
-        <div class="bd">
-          <div id="list" class="list"></div>
-        </div>
-      </section>
-      ${viewSidebar()}
-    `;
-  }
-
-  function renderList(filter=""){
-    const q = filter.trim().toLowerCase();
-    const rows = STORIES
-      .filter(s => {
-        if(!q) return true;
-        const hay = [s.titulo, s.topico, s.disciplina, s.modulo, s.contexto, ...(s.tags||[])].join(" ").toLowerCase();
-        return hay.includes(q);
-      })
-      .map(s => {
-        const done = isDone(s.id);
-        return `
-          <a class="item" href="#/story/${encodeURIComponent(s.slug)}" aria-label="Abrir história ${escapeHtml(s.titulo)}">
-            <div>
-              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
-                <strong>${escapeHtml(s.titulo)}</strong>
-                <span class="tag ${done ? "ok" : ""}">${done ? "✓ estudada" : "pendente"}</span>
-              </div>
-              <div class="mut" style="margin-top:4px">
-                ${escapeHtml(s.disciplina)} • ${escapeHtml(s.modulo)} • ${escapeHtml(s.topico)} • ${fmtDate(s.data)}
-              </div>
-              <div class="meta">
-                <span class="tag acc">${escapeHtml(s.topico)}</span>
-                ${(s.tags||[]).slice(0,4).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(" ")}
-              </div>
+    <!-- MAIN CONTENT -->
+    <main>
+        <div class="container">
+            <!-- LOADING -->
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <h3>Carregando conteúdo...</h3>
+                <p>Aguarde enquanto os casos são carregados.</p>
             </div>
-            <div style="display:flex; gap:8px; align-items:center">
-              <span class="mut">Abrir →</span>
+
+            <!-- ERROR -->
+            <div class="error hidden" id="error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Erro ao carregar dados</h3>
+                <p id="error-message">Não foi possível carregar o arquivo JSON.</p>
+                <button class="btn btn-primary mt-2" onclick="location.reload()">
+                    <i class="fas fa-redo"></i> Tentar Novamente
+                </button>
             </div>
-          </a>
-        `;
-      })
-      .join("");
 
-    const el = document.querySelector("#list");
-    if(!el) return;
-    el.innerHTML = rows || `<div class="mut">Nenhuma história encontrada.</div>`;
-  }
+            <!-- DASHBOARD -->
+            <div id="dashboard" class="hidden">
+                <div class="dashboard">
+                    <div class="module-info">
+                        <h1 class="module-title" id="module-title">Carregando...</h1>
+                        <p class="module-subtitle" id="module-subtitle">Disciplina: Carregando...</p>
+                    </div>
 
-  function viewStory(story){
-    if(!story){
-      return `
-        <section class="card">
-          <div class="hd"><h2 class="h2">História não encontrada</h2></div>
-          <div class="bd"><a class="btn" href="#/">Voltar</a></div>
-        </section>
-        ${viewSidebar()}
-      `;
-    }
+                    <!-- FILTERS -->
+                    <div class="filters">
+                        <div class="filter-grid">
+                            <div class="filter-group">
+                                <label class="filter-label">Nível</label>
+                                <select id="level-filter">
+                                    <option value="all">Todos os níveis</option>
+                                    <option value="1">Nível 1 (Básico)</option>
+                                    <option value="2">Nível 2 (Intermediário)</option>
+                                    <option value="3">Nível 3 (Avançado)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label class="filter-label">Prioridade</label>
+                                <select id="priority-filter">
+                                    <option value="all">Todas as prioridades</option>
+                                    <option value="altissima">Altíssima</option>
+                                    <option value="alta">Alta</option>
+                                    <option value="media">Média</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label class="filter-label">Status</label>
+                                <select id="status-filter">
+                                    <option value="all">Todos os status</option>
+                                    <option value="not-started">Não iniciado</option>
+                                    <option value="in-progress">Em progresso</option>
+                                    <option value="completed">Concluído</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary w-100 mt-2" onclick="applyFilters()">
+                            <i class="fas fa-filter"></i> Aplicar Filtros
+                        </button>
+                    </div>
 
-    const done = isDone(story.id);
-    const idx = STORIES.findIndex(s => s.id === story.id);
-    const prev = STORIES[idx-1];
-    const next = STORIES[idx+1];
-
-    return `
-      <section class="card">
-        <div class="hd">
-          <div class="crumbs">
-            <a class="pill" href="#/">📚 Biblioteca</a>
-            <span>›</span>
-            <span>${escapeHtml(story.disciplina)}</span>
-            <span>•</span>
-            <span>${escapeHtml(story.modulo)}</span>
-            <span>•</span>
-            <span>${escapeHtml(story.topico)}</span>
-          </div>
-          <h2 class="title">${escapeHtml(story.titulo)}</h2>
-          <p class="subtitle">📍 ${escapeHtml(story.contexto)} • 📅 ${fmtDate(story.data)} • <code>${escapeHtml(story.id)}</code></p>
-          <div class="toolbar" style="margin-top:12px">
-            <button class="btn ${done ? "ok" : "primary"}" id="btnDone">${done ? "✓ Marcada como estudada" : "Marcar como estudada"}</button>
-            <a class="btn" href="#/">Voltar para biblioteca</a>
-          </div>
-        </div>
-        <div class="bd">
-          <div class="section">
-            <h3>🧍 Narrativa</h3>
-            <p>${escapeHtml(story.narrativa)}</p>
-          </div>
-
-          <div class="section">
-            <h3>⚖️ O Conflito</h3>
-            <p><strong>${escapeHtml(story.conflito)}</strong></p>
-          </div>
-
-          <div class="section">
-            <h3>📚 Leis, princípios e jurisprudência</h3>
-            <ul>
-              ${(story.fundamentos||[]).map(x => `<li>${escapeHtml(x)}</li>`).join("")}
-            </ul>
-          </div>
-
-          <div class="section">
-            <h3>🧩 Explicação do conceito</h3>
-            <p>${escapeHtml(story.explicacao)}</p>
-          </div>
-
-          <div class="section">
-            <h3>🧑‍⚖️ Aplicação</h3>
-            <p>${escapeHtml(story.aplicacao)}</p>
-          </div>
-
-          <div class="callout">
-            <div class="mut" style="margin-bottom:6px">🧠 Ideia‑chave</div>
-            <div style="font-size:14px"><strong>${escapeHtml(story.ideiaChave)}</strong></div>
-          </div>
-
-          <div class="section">
-            <h3>❓ Para reflexão (estilo concurso)</h3>
-            <ul>
-              ${(story.perguntas||[]).map((q,i) => `<li><strong>${i+1}.</strong> ${escapeHtml(q)}</li>`).join("")}
-            </ul>
-          </div>
-
-          <div class="section">
-            <h3>💡 Dica de prova</h3>
-            <p>${escapeHtml(story.dicaProva)}</p>
-          </div>
-
-          <div class="toolbar" style="justify-content:space-between; margin-top:14px">
-            <div style="display:flex; gap:10px; flex-wrap:wrap">
-              ${prev ? `<a class="btn" href="#/story/${encodeURIComponent(prev.slug)}">← Anterior</a>` : `<span class="mut">← Anterior</span>`}
-              ${next ? `<a class="btn" href="#/story/${encodeURIComponent(next.slug)}">Próxima →</a>` : `<span class="mut">Próxima →</span>`}
+                    <!-- CASES GRID -->
+                    <div>
+                        <h2 style="margin-bottom: 1.5rem; color: var(--primary);">
+                            Casos Práticos <span id="cases-count" style="font-size: 1rem; color: var(--text-secondary);">(0)</span>
+                        </h2>
+                        <div class="cases-grid" id="cases-grid">
+                            <!-- Cases will be loaded here -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <a class="btn" href="#/">Biblioteca</a>
-          </div>
-        </div>
-      </section>
-      ${viewSidebar()}
-    `;
-  }
 
-  function viewRevisao(){
-    const p = loadProgress();
-    const done = STORIES.filter(s => p[s.id]);
-    const pend = STORIES.filter(s => !p[s.id]);
-
-    return `
-      <section class="card">
-        <div class="hd">
-          <h2 class="h2">🧠 Revisão</h2>
-          <div class="mut">Aqui aparece só o essencial: ideia‑chave + dica de prova.</div>
+            <!-- CASE DETAIL -->
+            <div id="case-detail" class="hidden">
+                <!-- Content loaded dynamically -->
+            </div>
         </div>
-        <div class="bd">
-          <div class="section">
-            <h3>✅ Estudadas (${done.length})</h3>
-            ${done.length ? done.map(s => `
-              <div class="item" style="align-items:center">
-                <div>
-                  <strong>${escapeHtml(s.titulo)}</strong>
-                  <div class="mut" style="margin-top:4px">${escapeHtml(s.ideiaChave)}</div>
-                  <div class="mut" style="margin-top:4px"><strong>Dica:</strong> ${escapeHtml(s.dicaProva)}</div>
+    </main>
+
+    <!-- TOAST -->
+    <div class="toast hidden" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Ação realizada com sucesso!</span>
+    </div>
+
+    <script>
+        // DADOS DO JSON
+        let moduleData = null;
+        let currentCaseIndex = -1;
+
+        // ESTADO DO USUÁRIO
+        let userState = {
+            completedCases: [],
+            savedCases: [],
+            answers: {},
+            dailyCompleted: 0,
+            lastResetDate: null,
+            filters: {
+                level: 'all',
+                priority: 'all',
+                status: 'all'
+            }
+        };
+
+        // CARREGAR DADOS DO JSON
+        async function loadModuleData() {
+            try {
+                console.log('Iniciando carregamento do JSON...');
+                
+                // Tentar carregar o JSON da mesma pasta
+                const response = await fetch('deepseek_material_base1.json', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                moduleData = await response.json();
+                
+                if (!moduleData || !moduleData.cases) {
+                    throw new Error('Formato inválido do JSON: campo "cases" não encontrado');
+                }
+                
+                console.log('JSON carregado com sucesso:', moduleData);
+                console.log('Número de casos:', moduleData.cases.length);
+                
+                hideLoading();
+                initApp();
+                
+            } catch (error) {
+                console.error('Erro detalhado:', error);
+                showError(`Erro ao carregar dados: ${error.message}<br><br>
+                    Certifique-se de que:<br>
+                    1. O arquivo "deepseek_material_base1.json" está na mesma pasta<br>
+                    2. O arquivo tem o formato JSON válido<br>
+                    3. O servidor permite acesso ao arquivo`);
+            }
+        }
+
+        // FUNÇÕES UTILITÁRIAS
+        function mdToHtml(md) {
+            if (!md) return '';
+            
+            return md
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                .replace(/^<p>/, '')
+                .replace(/<\/p>$/, '');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.innerHTML = message;
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        }
+
+        function showError(message) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('error-message').innerHTML = message;
+        }
+
+        function saveUserState() {
+            try {
+                localStorage.setItem('jurisStoriesState', JSON.stringify(userState));
+            } catch (e) {
+                console.warn('Não foi possível salvar no localStorage:', e);
+            }
+        }
+
+        function loadUserState() {
+            try {
+                const saved = localStorage.getItem('jurisStoriesState');
+                if (saved) {
+                    userState = JSON.parse(saved);
+                    
+                    // Restaurar filtros
+                    if (userState.filters) {
+                        document.getElementById('level-filter').value = userState.filters.level || 'all';
+                        document.getElementById('priority-filter').value = userState.filters.priority || 'all';
+                        document.getElementById('status-filter').value = userState.filters.status || 'all';
+                    }
+                }
+            } catch (e) {
+                console.warn('Não foi possível carregar do localStorage:', e);
+            }
+        }
+
+        // FUNÇÕES DE NAVEGAÇÃO
+        function showDashboard() {
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('case-detail').classList.add('hidden');
+            loadCases();
+        }
+
+        function showCase(index) {
+            if (!moduleData || !moduleData.cases || index < 0 || index >= moduleData.cases.length) {
+                showToast('Caso não encontrado');
+                return;
+            }
+            
+            currentCaseIndex = index;
+            const caseData = moduleData.cases[index];
+            
+            // Criar HTML do caso
+            const caseHtml = `
+                <div class="case-content">
+                    <div class="back-button">
+                        <button class="btn btn-secondary" onclick="showDashboard()">
+                            <i class="fas fa-arrow-left"></i> Voltar para Casos
+                        </button>
+                    </div>
+
+                    <div class="case-header-detail">
+                        <div class="case-code">${caseData.code}</div>
+                        <h1 class="case-detail-title">${caseData.title}</h1>
+                        <div class="case-context">${caseData.context}</div>
+                        <div class="case-tags">
+                            <span class="tag tag-level">Nível ${caseData.level}</span>
+                            <span class="tag tag-priority">${caseData.priority}</span>
+                            <span class="tag tag-topic">${caseData.topic}</span>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> A História
+                        </div>
+                        <div class="section-content">${mdToHtml(caseData.narrativeMd)}</div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-exclamation-triangle"></i> Conflito Central
+                        </div>
+                        <div class="section-content">${caseData.conflict}</div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Explicação Teórica
+                        </div>
+                        <div class="section-content">${mdToHtml(caseData.explanationMd)}</div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-gavel"></i> Aplicação Prática
+                        </div>
+                        <div class="section-content">${mdToHtml(caseData.applicationMd)}</div>
+                    </div>
+
+                    <div class="section key-idea">
+                        <div class="section-title">
+                            <i class="fas fa-key"></i> Ideia Central
+                        </div>
+                        <div class="section-content">${caseData.keyIdea}</div>
+                    </div>
+
+                    <div class="section proof-tip">
+                        <div class="section-title">
+                            <i class="fas fa-clipboard-check"></i> Dica para Provas
+                        </div>
+                        <div class="section-content">${caseData.proofTip}</div>
+                    </div>
+
+                    ${caseData.mnemonics && caseData.mnemonics.length > 0 ? `
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-brain"></i> Mnemônicos
+                        </div>
+                        <div class="mnemonics-grid">
+                            ${caseData.mnemonics.map(mnemonic => `
+                                <div class="mnemonic-card">
+                                    <div style="font-weight: 600; color: var(--primary); margin-bottom: 0.5rem;">
+                                        <i class="fas fa-brain"></i> Mnemônico
+                                    </div>
+                                    <div>${mnemonic}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-question-circle"></i> Questões de Revisão
+                        </div>
+                        <div class="questions-container" id="questions-container-${index}">
+                            <!-- Questions will be added dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="case-actions-bar">
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" onclick="toggleSaveCase('${caseData.code}')">
+                                <i class="far fa-bookmark" id="save-icon-${caseData.code}"></i> Salvar
+                            </button>
+                            <button class="btn btn-success" onclick="toggleCompleteCase('${caseData.code}')">
+                                <i class="far fa-check-circle" id="complete-icon-${caseData.code}"></i> Concluir
+                            </button>
+                        </div>
+                        
+                        <div class="case-counter">Caso ${index + 1}/${moduleData.cases.length}</div>
+                        
+                        <button class="btn btn-primary" onclick="nextCase()">
+                            Próximo <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
-                <div style="display:flex; gap:8px; align-items:center">
-                  <a class="btn" href="#/story/${encodeURIComponent(s.slug)}">Abrir</a>
-                  <button class="btn" onclick="toggleDone('${s.id}')">Desmarcar</button>
-                </div>
-              </div>
-            `).join("") : `<div class="mut">Nenhuma história marcada ainda.</div>`}
-          </div>
+            `;
+            
+            // Inserir HTML
+            document.getElementById('case-detail').innerHTML = caseHtml;
+            
+            // Carregar questões
+            loadQuestions(index, caseData);
+            
+            // Atualizar botões
+            updateCaseButtons(caseData.code);
+            
+            // Mostrar detalhes
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('case-detail').classList.remove('hidden');
+            
+            // Scroll para o topo
+            window.scrollTo(0, 0);
+        }
 
-          <div class="section">
-            <h3>📌 Pendentes (${pend.length})</h3>
-            ${pend.length ? pend.map(s => `
-              <div class="item" style="align-items:center">
-                <div>
-                  <strong>${escapeHtml(s.titulo)}</strong>
-                  <div class="mut" style="margin-top:4px">${escapeHtml(s.topico)} • ${fmtDate(s.data)}</div>
-                </div>
-                <a class="btn" href="#/story/${encodeURIComponent(s.slug)}">Abrir</a>
-              </div>
-            `).join("") : `<div class="mut">Tudo concluído 🎉</div>`}
-          </div>
-        </div>
-      </section>
-      ${viewSidebar()}
-    `;
-  }
+        function loadQuestions(index, caseData) {
+            const container = document.getElementById(`questions-container-${index}`);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Questão 1 - CESPE
+            const question1 = {
+                type: 'CESPE',
+                text: `Segundo o caso "${caseData.title}", ${caseData.proofTip}`,
+                correct: true,
+                explanation: caseData.proofTip
+            };
+            
+            // Questão 2 - FCC
+            const question2 = {
+                type: 'FCC',
+                text: `Com base no caso apresentado, assinale a alternativa CORRETA sobre ${caseData.topic}:`,
+                options: [
+                    caseData.keyIdea,
+                    "A administração sempre age com supremacia absoluta",
+                    "Não há diferença prática entre os regimes",
+                    "O direito privado nunca se aplica à administração"
+                ],
+                correctIndex: 0,
+                explanation: caseData.keyIdea
+            };
+            
+            const questions = [question1, question2];
+            
+            questions.forEach((question, qIndex) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-card';
+                
+                let questionHTML = `
+                    <div class="question-header">
+                        <div class="question-type">${question.type}</div>
+                        <div class="question-text">${question.text}</div>
+                    </div>
+                `;
+                
+                if (question.type === 'CESPE') {
+                    questionHTML += `
+                        <div class="options">
+                            <div class="option" onclick="answerQuestion(${index}, ${qIndex}, 'C')">
+                                <div class="option-letter">C</div>
+                                <div>Certo</div>
+                            </div>
+                            <div class="option" onclick="answerQuestion(${index}, ${qIndex}, 'E')">
+                                <div class="option-letter">E</div>
+                                <div>Errado</div>
+                            </div>
+                        </div>
+                        <div class="feedback" id="feedback-${index}-${qIndex}">
+                            <div class="feedback-title">Explicação</div>
+                            <div>${question.explanation}</div>
+                        </div>
+                    `;
+                } else if (question.type === 'FCC') {
+                    let optionsHTML = '';
+                    question.options.forEach((option, optIndex) => {
+                        const letter = String.fromCharCode(65 + optIndex);
+                        optionsHTML += `
+                            <div class="option" onclick="answerQuestion(${index}, ${qIndex}, '${letter}')">
+                                <div class="option-letter">${letter}</div>
+                                <div>${option}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    questionHTML += `
+                        <div class="options">
+                            ${optionsHTML}
+                        </div>
+                        <div class="feedback" id="feedback-${index}-${qIndex}">
+                            <div class="feedback-title">Explicação</div>
+                            <div>${question.explanation}</div>
+                        </div>
+                    `;
+                }
+                
+                questionDiv.innerHTML = questionHTML;
+                container.appendChild(questionDiv);
+            });
+        }
 
-  function viewSobre(){
-    return `
-      <section class="card">
-        <div class="hd">
-          <h2 class="h2">ℹ️ Sobre este exemplo</h2>
-          <div class="mut">O objetivo é te dar um “esqueleto” pronto para o seu site.</div>
-        </div>
-        <div class="bd">
-          <div class="section">
-            <h3>Como usar</h3>
-            <ul>
-              <li>Copie este arquivo <code>.html</code> e abra no navegador.</li>
-              <li>Edite o array <code>STORIES</code> para colocar suas histórias reais.</li>
-              <li>Quando tiver muitas histórias, você pode carregar um <code>stories.json</code> externo.</li>
-            </ul>
-          </div>
-          <div class="section">
-            <h3>Próximo passo recomendado</h3>
-            <ul>
-              <li>Separar histórias por <strong>disciplina</strong> e <strong>módulo</strong>.</li>
-              <li>Adicionar <strong>filtro por módulo</strong> e <strong>página de módulo</strong>.</li>
-              <li>Colocar um backend (ou CMS) quando você quiser login, compra e sincronização de progresso.</li>
-            </ul>
-          </div>
-          <a class="btn" href="#/">Voltar</a>
-        </div>
-      </section>
-      ${viewSidebar()}
-    `;
-  }
+        function answerQuestion(caseIndex, questionIndex, answer) {
+            const options = document.querySelectorAll(`#questions-container-${caseIndex} .question-card:nth-child(${questionIndex + 1}) .option`);
+            const feedback = document.getElementById(`feedback-${caseIndex}-${questionIndex}`);
+            
+            // Remover todas as classes
+            options.forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Verificar resposta
+            const isCorrect = (questionIndex === 0 && answer === 'C') || 
+                            (questionIndex === 1 && answer === 'A');
+            
+            // Marcar opção selecionada
+            const selectedIndex = answer === 'C' ? 0 : answer === 'E' ? 1 : answer.charCodeAt(0) - 65;
+            if (options[selectedIndex]) {
+                options[selectedIndex].classList.add('selected');
+                if (isCorrect) {
+                    options[selectedIndex].classList.add('correct');
+                } else {
+                    options[selectedIndex].classList.add('incorrect');
+                }
+            }
+            
+            // Mostrar feedback
+            if (feedback) {
+                feedback.classList.add('show');
+            }
+            
+            // Salvar resposta
+            const caseCode = moduleData.cases[caseIndex].code;
+            if (!userState.answers[caseCode]) {
+                userState.answers[caseCode] = {};
+            }
+            userState.answers[caseCode][`q${questionIndex}`] = {
+                answer: answer,
+                correct: isCorrect,
+                timestamp: new Date().toISOString()
+            };
+            
+            saveUserState();
+        }
 
-  // =============================
-  // 6) RENDER
-  // =============================
-  function bindCommon(){
-    const reset = document.querySelector("#btnReset");
-    if(reset){
-      reset.onclick = () => {
-        localStorage.removeItem(STORAGE_KEY);
-        render();
-      };
-    }
-  }
+        function updateCaseButtons(caseCode) {
+            if (!caseCode) return;
+            
+            const isSaved = userState.savedCases.includes(caseCode);
+            const isCompleted = userState.completedCases.includes(caseCode);
+            
+            // Atualizar botão de salvar
+            const saveIcon = document.getElementById(`save-icon-${caseCode}`);
+            if (saveIcon) {
+                saveIcon.className = isSaved ? 'fas fa-bookmark' : 'far fa-bookmark';
+            }
+            
+            // Atualizar botão de concluir
+            const completeIcon = document.getElementById(`complete-icon-${caseCode}`);
+            if (completeIcon) {
+                completeIcon.className = isCompleted ? 'fas fa-check-circle' : 'far fa-check-circle';
+            }
+        }
 
-  function render(){
-    const r = route();
+        function toggleSaveCase(caseCode) {
+            if (!caseCode) return;
+            
+            const index = userState.savedCases.indexOf(caseCode);
+            
+            if (index === -1) {
+                userState.savedCases.push(caseCode);
+                showToast('Caso salvo para revisão!');
+            } else {
+                userState.savedCases.splice(index, 1);
+                showToast('Caso removido dos salvos.');
+            }
+            
+            updateCaseButtons(caseCode);
+            saveUserState();
+        }
 
-    if(r.name === "home"){
-      $app.innerHTML = viewHome();
-      renderList("");
-      const q = document.querySelector("#q");
-      if(q){
-        q.addEventListener("input", () => renderList(q.value));
-        q.focus();
-      }
-      bindCommon();
-      return;
-    }
+        function toggleCompleteCase(caseCode) {
+            if (!caseCode) return;
+            
+            const index = userState.completedCases.indexOf(caseCode);
+            
+            if (index === -1) {
+                userState.completedCases.push(caseCode);
+                userState.dailyCompleted = (userState.dailyCompleted || 0) + 1;
+                showToast('Caso marcado como concluído!');
+            } else {
+                userState.completedCases.splice(index, 1);
+                userState.dailyCompleted = Math.max(0, (userState.dailyCompleted || 0) - 1);
+                showToast('Caso removido dos concluídos.');
+            }
+            
+            updateCaseButtons(caseCode);
+            saveUserState();
+        }
 
-    if(r.name === "story"){
-      const story = STORIES.find(s => s.slug === decodeURIComponent(r.slug));
-      $app.innerHTML = viewStory(story);
-      const btn = document.querySelector("#btnDone");
-      if(btn && story){ btn.onclick = () => toggleDone(story.id); }
-      bindCommon();
-      return;
-    }
+        function nextCase() {
+            if (currentCaseIndex < moduleData.cases.length - 1) {
+                showCase(currentCaseIndex + 1);
+            } else {
+                showToast('Este é o último caso do módulo!');
+            }
+        }
 
-    if(r.name === "revisao"){
-      $app.innerHTML = viewRevisao();
-      bindCommon();
-      return;
-    }
+        // FUNÇÕES DE FILTRO
+        function applyFilters() {
+            userState.filters.level = document.getElementById('level-filter').value;
+            userState.filters.priority = document.getElementById('priority-filter').value;
+            userState.filters.status = document.getElementById('status-filter').value;
+            
+            saveUserState();
+            loadCases();
+            showToast('Filtros aplicados!');
+        }
 
-    if(r.name === "sobre"){
-      $app.innerHTML = viewSobre();
-      bindCommon();
-      return;
-    }
-  }
+        function loadCases() {
+            if (!moduleData || !moduleData.cases) return;
+            
+            const container = document.getElementById('cases-grid');
+            const countSpan = document.getElementById('cases-count');
+            container.innerHTML = '';
+            
+            const filteredCases = moduleData.cases.filter(caseItem => {
+                // Filtrar por nível
+                if (userState.filters.level !== 'all' && 
+                    caseItem.level.toString() !== userState.filters.level) {
+                    return false;
+                }
+                
+                // Filtrar por prioridade
+                if (userState.filters.priority !== 'all' && 
+                    caseItem.priority !== userState.filters.priority) {
+                    return false;
+                }
+                
+                // Filtrar por status
+                if (userState.filters.status !== 'all') {
+                    const isCompleted = userState.completedCases.includes(caseItem.code);
+                    const hasAnswers = userState.answers[caseItem.code] !== undefined;
+                    
+                    if (userState.filters.status === 'completed' && !isCompleted) {
+                        return false;
+                    }
+                    if (userState.filters.status === 'in-progress' && (!hasAnswers || isCompleted)) {
+                        return false;
+                    }
+                    if (userState.filters.status === 'not-started' && (hasAnswers || isCompleted)) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            countSpan.textContent = `(${filteredCases.length})`;
+            
+            filteredCases.forEach((caseItem, index) => {
+                const isCompleted = userState.completedCases.includes(caseItem.code);
+                const hasAnswers = userState.answers[caseItem.code] !== undefined;
+                
+                let status = 'not-started';
+                let statusText = 'Não iniciado';
+                let statusClass = 'status-not-started';
+                
+                if (isCompleted) {
+                    status = 'completed';
+                    statusText = 'Concluído';
+                    statusClass = 'status-completed';
+                } else if (hasAnswers) {
+                    status = 'in-progress';
+                    statusText = 'Em progresso';
+                    statusClass = 'status-in-progress';
+                }
+                
+                const caseDiv = document.createElement('div');
+                caseDiv.className = 'case-card';
+                caseDiv.onclick = () => showCase(index);
+                
+                caseDiv.innerHTML = `
+                    <div class="case-header">
+                        <div class="case-code">${caseItem.code}</div>
+                        <div class="case-title">${caseItem.title}</div>
+                        <div class="case-meta">
+                            <span><i class="fas fa-signal"></i> Nível ${caseItem.level}</span>
+                            <span><i class="fas fa-flag"></i> ${caseItem.priority}</span>
+                        </div>
+                    </div>
+                    <div class="case-body">
+                        <div class="case-topic">${caseItem.topic}</div>
+                        <div class="case-context">${caseItem.context}</div>
+                        <div class="case-footer">
+                            <span class="case-status ${statusClass}">${statusText}</span>
+                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showCase(${index})">
+                                <i class="fas fa-play"></i> Estudar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(caseDiv);
+            });
+        }
 
-  window.addEventListener("hashchange", render);
-  render();
-</script>
+        // INICIALIZAÇÃO
+        function initApp() {
+            if (!moduleData) {
+                showError('Dados não carregados corretamente.');
+                return;
+            }
+            
+            loadUserState();
+            
+            // Atualizar informações do módulo
+            document.getElementById('module-title').textContent = moduleData.module.name;
+            document.getElementById('module-subtitle').textContent = 
+                `Disciplina: ${moduleData.discipline.name} | ${moduleData.cases.length} casos`;
+            
+            loadCases();
+            
+            // Configurar evento de clique para o logo
+            document.querySelector('.logo').addEventListener('click', showDashboard);
+            
+            console.log('Aplicação inicializada com sucesso!');
+        }
+
+        // INICIAR APLICAÇÃO
+        document.addEventListener('DOMContentLoaded', () => {
+            loadModuleData();
+        });
+
+        // Tornar funções globais
+        window.showDashboard = showDashboard;
+        window.showCase = showCase;
+        window.nextCase = nextCase;
+        window.applyFilters = applyFilters;
+        window.answerQuestion = answerQuestion;
+        window.toggleSaveCase = toggleSaveCase;
+        window.toggleCompleteCase = toggleCompleteCase;
+    </script>
 </body>
 </html>
